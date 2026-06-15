@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import { ChevronLeft } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { WizardAnimatedItem } from '../animation'
 
 interface NameInputSlideProps {
   value: string
   onChange: (value: string) => void
   onSubmit: () => void
+  onFocusChange?: (focused: boolean) => void
   title: string
   subtitle: string
   placeholder: string
@@ -16,18 +17,14 @@ export function NameInputSlide({
   value,
   onChange,
   onSubmit,
+  onFocusChange,
   title,
   subtitle,
   placeholder,
 }: NameInputSlideProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [isFocused, setIsFocused] = useState(true)
-  const showCustomCursor = isFocused && value.length === 0
+  const [isVisuallyActive, setIsVisuallyActive] = useState(true)
+  const showCustomCursor = isVisuallyActive && value.length === 0
   const canSubmit = value.trim().length >= 2
-
-  useEffect(() => {
-    inputRef.current?.focus({ preventScroll: true })
-  }, [])
 
   const handleSubmit = () => {
     if (!canSubmit) return
@@ -49,12 +46,17 @@ export function NameInputSlide({
       <WizardAnimatedItem>
         <div className="relative">
           <input
-            ref={inputRef}
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={() => {
+              setIsVisuallyActive(true)
+              onFocusChange?.(true)
+            }}
+            onBlur={() => {
+              setIsVisuallyActive(false)
+              onFocusChange?.(false)
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
@@ -62,13 +64,12 @@ export function NameInputSlide({
               }
             }}
             placeholder={showCustomCursor ? '' : placeholder}
-            autoFocus
             className={clsx(
               'w-full rounded-full border-2 bg-white/50 py-3.5 pr-5 text-right text-sm text-textMain outline-none transition-colors',
               'placeholder:text-[#49A3AA]/50',
               showCustomCursor ? 'caret-transparent' : 'caret-[#49A3AA]',
               canSubmit ? 'pl-12' : 'pl-5',
-              isFocused
+              isVisuallyActive
                 ? 'animate-wizard-input-pulse border-[#49A3AA] bg-white/70'
                 : 'border-transparent',
             )}

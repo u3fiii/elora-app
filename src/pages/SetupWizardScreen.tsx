@@ -22,6 +22,11 @@ export function SetupWizardScreen() {
   const location = useLocation()
   const [slideIndex, setSlideIndex] = useState(0)
   const [answers, setAnswers] = useState<WizardAnswers>(createInitialAnswers)
+  const [nameInputFocused, setNameInputFocused] = useState(false)
+
+  useEffect(() => {
+    setNameInputFocused(false)
+  }, [slideIndex])
 
   useEffect(() => {
     if ((location.state as { resetWizard?: boolean } | null)?.resetWizard) {
@@ -32,7 +37,8 @@ export function SetupWizardScreen() {
   }, [location.state, navigate])
   const mockKeyboardEnabled = useMockKeyboardEnabled()
   const isNameInputSlide = slideIndex === 1 || slideIndex === 2
-  const showMockKeyboard = isNameInputSlide && mockKeyboardEnabled
+  const showMockKeyboard =
+    isNameInputSlide && mockKeyboardEnabled && nameInputFocused
   const activeNameField = slideIndex === 1 ? 'userName' : 'childName'
 
   const isLastSlide = slideIndex === WIZARD_SLIDE_COUNT - 1
@@ -92,6 +98,7 @@ export function SetupWizardScreen() {
               setAnswers((prev) => ({ ...prev, userName }))
             }
             onSubmit={handleContinue}
+            onFocusChange={setNameInputFocused}
           />
         )
       case 2:
@@ -105,6 +112,7 @@ export function SetupWizardScreen() {
               setAnswers((prev) => ({ ...prev, childName }))
             }
             onSubmit={handleContinue}
+            onFocusChange={setNameInputFocused}
           />
         )
       case 3:
