@@ -28,7 +28,6 @@ export default {
         border: '#EFEAE3',
         wizard: {
           bg: '#AEE5D3',
-          dome: '#B9EEDD',
           title: '#5A9E8F',
           dot: '#C5E8DC',
           dotActive: '#5A9E8F',
