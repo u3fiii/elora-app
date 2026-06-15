@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+@config '../tailwind.config.js';
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BonyadeKoodak';
+  src: url('./assets/fonts/BonyadeKoodakKoochakNoEn-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-wizard-input-pulse {
+    animation: wizard-input-pulse 2s ease-in-out infinite;
+  }
+
+  .animate-cursor-blink {
+    animation: cursor-blink 1s step-end infinite;
+  }
+
+  .animate-wizard-card-pulse {
+    animation: wizard-card-pulse 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes wizard-input-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(73 163 170 / 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgb(73 163 170 / 0);
+  }
+}
+
+@keyframes wizard-card-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(148 212 203 / 0.55);
+  }
+
+  50% {
+    box-shadow: 0 0 0 14px rgb(148 212 203 / 0);
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+body {
+  font-family: BonyadeKoodak, sans-serif;
+  color: #33302c;
+  -webkit-font-smoothing: antialiased;
+}
