@@ -1,8 +1,12 @@
 import type { ReactNode } from 'react'
 import clsx from 'clsx'
+import bgLogoTr from '../../assets/bg-logo-tr.png'
+import { wizardDomeConfig } from './wizardDomeConfig'
+import { wizardDotOverlayClass } from './wizardDotPattern'
 
 interface WizardShellProps {
   footer: ReactNode
+  header?: ReactNode
   children: ReactNode
   keyboard?: ReactNode
   contentClassName?: string
@@ -10,17 +14,60 @@ interface WizardShellProps {
 
 export function WizardShell({
   footer,
+  header,
   children,
   keyboard,
   contentClassName,
 }: WizardShellProps) {
+  const { contentPaddingTop, blackCircle, logoBgTr } = wizardDomeConfig
+
+  const blackCircleTop = blackCircle.centerY - blackCircle.diameter / 2
+
   return (
-    <div className="relative flex min-h-screen flex-col overflow-visible bg-wizard-bg">
+    <div className="relative isolate flex h-dvh w-full flex-col overflow-hidden bg-wizard-dome">
+      <img
+        src={bgLogoTr}
+        alt=""
+        className="pointer-events-none absolute z-0 block origin-top-right select-none"
+        style={{
+          top: logoBgTr.top,
+          right: logoBgTr.right,
+          width: logoBgTr.width,
+          transform: `scale(${logoBgTr.scale})`,
+        }}
+        aria-hidden
+      />
+
+      <div
+        className="pointer-events-none absolute left-1/2 z-[1] -translate-x-1/2 rounded-full bg-black/5"
+        style={{
+          width: blackCircle.diameter,
+          height: blackCircle.diameter,
+          top: blackCircleTop,
+        }}
+        aria-hidden
+      />
+
       <div
         className={clsx(
-          'relative z-10 flex flex-1 flex-col overflow-visible px-5 pt-[6.75rem]',
+          'pointer-events-none absolute inset-0 z-[2]',
+          wizardDotOverlayClass,
+        )}
+        aria-hidden
+      />
+
+      {header ? (
+        <div className="relative z-10 flex shrink-0 flex-col items-center px-5 pt-16 pb-5">
+          {header}
+        </div>
+      ) : null}
+
+      <div
+        className={clsx(
+          'relative z-10 flex flex-1 flex-col px-5',
           contentClassName ?? 'pb-28',
         )}
+        style={{ paddingTop: contentPaddingTop }}
       >
         {children}
       </div>

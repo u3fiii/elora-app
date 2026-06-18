@@ -1,6 +1,8 @@
 import clsx from 'clsx'
 import { ChevronLeft } from 'lucide-react'
 import { useState } from 'react'
+import type { ChildGender } from '../../../types'
+import { ChildGenderChips } from '../ChildGenderChips'
 import { WizardAnimatedItem } from '../animation'
 
 interface NameInputSlideProps {
@@ -11,6 +13,8 @@ interface NameInputSlideProps {
   title: string
   subtitle: string
   placeholder: string
+  selectedGender?: ChildGender
+  onGenderChange?: (gender: ChildGender) => void
 }
 
 export function NameInputSlide({
@@ -21,6 +25,8 @@ export function NameInputSlide({
   title,
   subtitle,
   placeholder,
+  selectedGender,
+  onGenderChange,
 }: NameInputSlideProps) {
   const [isVisuallyActive, setIsVisuallyActive] = useState(true)
   const showCustomCursor = isVisuallyActive && value.length === 0
@@ -42,6 +48,15 @@ export function NameInputSlide({
           <p className="mt-2 text-sm font-semibold text-wizard-title">{subtitle}</p>
         </WizardAnimatedItem>
       </div>
+
+      {onGenderChange ? (
+        <WizardAnimatedItem>
+          <ChildGenderChips
+            value={selectedGender}
+            onChange={onGenderChange}
+          />
+        </WizardAnimatedItem>
+      ) : null}
 
       <WizardAnimatedItem>
         <div className="relative">

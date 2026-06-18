@@ -64,7 +64,7 @@ function RoleCard({ option, isSelected, onSelect }: RoleCardProps) {
       initial={{ scale: 1 }}
       onClick={handleClick}
       className={clsx(
-        'relative flex w-full items-center justify-between overflow-hidden rounded-2xl px-5 py-3.5 transition-colors duration-300 ease-in-out',
+        'relative flex w-full items-center justify-between overflow-hidden rounded-full px-8 py-3.5 transition-colors duration-300 ease-in-out',
         isSelected
           ? 'animate-wizard-card-pulse border-4 border-wizard-cardBorder bg-wizard-cardSelected'
           : 'border-4 border-transparent bg-wizard-card/80',

@@ -126,4 +126,38 @@ body {
   font-family: BonyadeKoodak, sans-serif;
   color: #33302c;
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+html {
+  overflow: hidden;
+}
+
+@utility wizard-dot-overlay {
+  background-image: radial-gradient(
+    circle,
+    rgb(73 163 170 / 0.22) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 20px 20px;
+}
+
+@utility wizard-bg-dotted {
+  background-color: #aee5d3;
+  background-image: radial-gradient(
+    circle,
+    rgb(73 163 170 / 0.22) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 20px 20px;
+}
+
+@utility wizard-dome-dotted {
+  background-color: #b9eedd;
+  background-image: radial-gradient(
+    circle,
+    rgb(73 163 170 / 0.22) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 20px 20px;
 }

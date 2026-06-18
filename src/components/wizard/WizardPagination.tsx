@@ -1,21 +1,22 @@
 import clsx from 'clsx'
-import { WIZARD_SLIDE_COUNT } from '../../data/wizardData'
 
 interface WizardPaginationProps {
   activeIndex: number
+  slideCount: number
   onDotClick?: (index: number) => void
 }
 
 export function WizardPagination({
   activeIndex,
+  slideCount,
   onDotClick,
 }: WizardPaginationProps) {
-  const activeVisualIndex = WIZARD_SLIDE_COUNT - 1 - activeIndex
+  const activeVisualIndex = slideCount - 1 - activeIndex
 
   return (
-    <div className="flex items-center justify-center gap-[3px]">
-      {Array.from({ length: WIZARD_SLIDE_COUNT }).map((_, visualIndex) => {
-        const slideIndex = WIZARD_SLIDE_COUNT - 1 - visualIndex
+    <div dir="ltr" className="flex items-center justify-center gap-[3px]">
+      {Array.from({ length: slideCount }).map((_, visualIndex) => {
+        const slideIndex = slideCount - 1 - visualIndex
 
         return (
           <button

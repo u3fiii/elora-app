@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { wizardContainerVariants } from './wizardAnimation'
 
 interface WizardAnimatedSlideProps {
-  slideKey: number
+  slideKey: number | string
   children: ReactNode
 }
 

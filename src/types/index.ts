@@ -51,6 +51,10 @@ export interface ParentProfile {
 
 export type ParentRole = 'mother' | 'father' | 'other'
 
+export type OtherRoleDetail = 'grandparent' | 'family' | 'caregiver' | 'other'
+
+export type ChildGender = 'boy' | 'girl'
+
 export interface ChildBirthDate {
   year: number
   month: number
@@ -59,7 +63,9 @@ export interface ChildBirthDate {
 
 export interface WizardAnswers {
   role?: ParentRole
+  otherRoleDetail?: OtherRoleDetail
   userName?: string
   childName?: string
+  childGender?: ChildGender
   childBirthDate?: ChildBirthDate
 }

@@ -1,3 +1,5 @@
+import type { ChildBirthDate } from '../types'
+
 export const JALALI_MONTHS = [
   'فروردین',
   'اردیبهشت',
@@ -37,4 +39,8 @@ export function getDefaultChildBirthDate() {
     month: 9,
     day: 15,
   }
+}
+
+export function formatChildBirthDateLabel(date: ChildBirthDate): string {
+  return `${formatPersianNumber(date.day)} ${JALALI_MONTHS[date.month - 1]} ${formatPersianNumber(date.year)}`
 }
