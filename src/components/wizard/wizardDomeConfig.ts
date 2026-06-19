@@ -6,7 +6,7 @@
  */
 export const wizardDomeConfig = {
   /** Toggle the dotted background overlay */
-  showDotPattern: false,
+  showDotPattern: true,
 
   /** Content offset from the top of the page (px) */
   contentPaddingTop: 8,

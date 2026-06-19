@@ -10,6 +10,7 @@ interface WizardShellProps {
   children: ReactNode
   keyboard?: ReactNode
   contentClassName?: string
+  contentPaddingTop?: number
 }
 
 export function WizardShell({
@@ -18,9 +19,9 @@ export function WizardShell({
   children,
   keyboard,
   contentClassName,
+  contentPaddingTop = wizardDomeConfig.contentPaddingTop,
 }: WizardShellProps) {
-  const { contentPaddingTop, blackCircle, logoBgTr, showDotPattern } =
-    wizardDomeConfig
+  const { blackCircle, logoBgTr, showDotPattern } = wizardDomeConfig
 
   const blackCircleTop = blackCircle.centerY - blackCircle.diameter / 2
 
@@ -67,8 +68,8 @@ export function WizardShell({
 
       <div
         className={clsx(
-          'relative z-10 flex flex-1 flex-col px-5',
-          contentClassName ?? 'pb-28',
+          'relative z-10 flex flex-1 flex-col',
+          contentClassName ?? 'px-5 pb-28',
         )}
         style={{ paddingTop: contentPaddingTop }}
       >
@@ -76,12 +77,12 @@ export function WizardShell({
       </div>
 
       {keyboard && (
-        <div className="fixed bottom-[4.75rem] left-1/2 z-30 w-full max-w-[430px] -translate-x-1/2">
+        <div className="absolute inset-x-0 bottom-[4.75rem] z-30 px-5">
           {keyboard}
         </div>
       )}
 
-      <div className="fixed bottom-0 left-1/2 z-20 w-full max-w-[430px] -translate-x-1/2 px-5 pb-8">
+      <div className="absolute inset-x-0 bottom-0 z-20 px-5 pb-8">
         {footer}
       </div>
     </div>
