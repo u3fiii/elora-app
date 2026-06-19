@@ -15,7 +15,7 @@ export function WizardAnimatedItem({
   return (
     <motion.div
       variants={wizardItemVariants}
-      className={clsx('overflow-visible', className)}
+      className={clsx('origin-center overflow-visible', className)}
     >
       {children}
     </motion.div>

@@ -49,6 +49,50 @@ export interface ParentProfile {
   name: string
 }
 
+export interface HomeChild {
+  id: string
+  name: string
+  ageLabel: string
+  avatarLetter: string
+  avatarClass: string
+}
+
+export interface HomeTask {
+  id: string
+  label: string
+  colorClass: string
+  completed: boolean
+  description: string
+  articleLink?: {
+    title: string
+  }
+}
+
+export interface HomeLearningItem {
+  id: string
+  imageSrc: string
+  alt: string
+}
+
+export interface HomeContentCard {
+  id: string
+  imageSrc: string
+  alt: string
+}
+
+export type HomeSegment = 'baby' | 'parent'
+
+export type HomeNavTab = 'profile' | 'chat' | 'home' | 'calendar' | 'library'
+
+export type GrowthEventMarker = 'mint' | 'yellow'
+
+export interface GrowthCalendarConfig {
+  year: number
+  month: number
+  today: number
+  eventDays: Record<number, GrowthEventMarker[]>
+}
+
 export type ParentRole = 'mother' | 'father' | 'other'
 
 export type OtherRoleDetail = 'grandparent' | 'family' | 'caregiver' | 'other'

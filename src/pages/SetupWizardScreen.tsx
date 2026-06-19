@@ -132,7 +132,10 @@ export function SetupWizardScreen() {
 
   const finishSupplementary = () => {
     navigate('/profile-success', {
-      state: { childName: answers.childName },
+      state: {
+        childName: answers.childName,
+        userName: answers.userName,
+      },
       replace: true,
     })
   }
