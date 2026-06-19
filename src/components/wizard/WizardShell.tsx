@@ -19,7 +19,8 @@ export function WizardShell({
   keyboard,
   contentClassName,
 }: WizardShellProps) {
-  const { contentPaddingTop, blackCircle, logoBgTr } = wizardDomeConfig
+  const { contentPaddingTop, blackCircle, logoBgTr, showDotPattern } =
+    wizardDomeConfig
 
   const blackCircleTop = blackCircle.centerY - blackCircle.diameter / 2
 
@@ -48,13 +49,15 @@ export function WizardShell({
         aria-hidden
       />
 
-      <div
-        className={clsx(
-          'pointer-events-none absolute inset-0 z-[2]',
-          wizardDotOverlayClass,
-        )}
-        aria-hidden
-      />
+      {showDotPattern ? (
+        <div
+          className={clsx(
+            'pointer-events-none absolute inset-0 z-[2]',
+            wizardDotOverlayClass,
+          )}
+          aria-hidden
+        />
+      ) : null}
 
       {header ? (
         <div className="relative z-10 flex shrink-0 flex-col items-center px-5 pt-16 pb-5">

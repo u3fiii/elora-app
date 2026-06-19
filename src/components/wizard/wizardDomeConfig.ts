@@ -5,6 +5,9 @@
  * The circle creates a natural curved edge without a rectangular clip.
  */
 export const wizardDomeConfig = {
+  /** Toggle the dotted background overlay */
+  showDotPattern: false,
+
   /** Content offset from the top of the page (px) */
   contentPaddingTop: 8,
 
