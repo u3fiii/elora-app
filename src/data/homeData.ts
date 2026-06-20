@@ -11,6 +11,8 @@ import learning4 from '../assets/learning/learning-4.png'
 import carousel1 from '../assets/carousel/carousel-1.png'
 import carousel2 from '../assets/carousel/carousel-2.png'
 import carousel3 from '../assets/carousel/carousel-3.png'
+import carousel4 from '../assets/carousel/carousel-4.png'
+import carousel5 from '../assets/carousel/carousel-5.png'
 
 export const homeChildren: HomeChild[] = [
   {
@@ -244,9 +246,11 @@ export const homeLearningItems: HomeLearningItem[] = [
 ]
 
 export const homeContentCards: HomeContentCard[] = [
-  { id: '1', imageSrc: carousel1, alt: 'Baby Hat for Every Season' },
-  { id: '2', imageSrc: carousel2, alt: 'This is slide No Two' },
-  { id: '3', imageSrc: carousel3, alt: 'Baby Hat for Every Season' },
+  { id: '1', imageSrc: carousel1, alt: 'تابستان و شادی' },
+  { id: '2', imageSrc: carousel2, alt: 'یک لحظه شیرین' },
+  { id: '3', imageSrc: carousel4, alt: 'لبخند و اعتماد‌به‌نفس' },
+  { id: '4', imageSrc: carousel3, alt: 'خلاقیت کودکانه' },
+  { id: '5', imageSrc: carousel5, alt: 'یادگیری با بازی' },
 ]
 
 export const homeStreakDays = 14
