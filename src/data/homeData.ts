@@ -8,6 +8,7 @@ import learning1 from '../assets/learning/learning-1.png'
 import learning2 from '../assets/learning/learning-2.png'
 import learning3 from '../assets/learning/learning-3.png'
 import learning4 from '../assets/learning/learning-4.png'
+import learning5 from '../assets/learning/learning-5.png'
 import carousel1 from '../assets/carousel/carousel-1.png'
 import carousel2 from '../assets/carousel/carousel-2.png'
 import carousel3 from '../assets/carousel/carousel-3.png'
@@ -239,10 +240,11 @@ export const initialParentHomeTasks: HomeTask[] = [
 ]
 
 export const homeLearningItems: HomeLearningItem[] = [
-  { id: '1', imageSrc: learning1, alt: 'Tiny kicks, big dreams' },
-  { id: '2', imageSrc: learning2, alt: 'آموزش والدین' },
-  { id: '3', imageSrc: learning3, alt: 'آموزش کودک' },
-  { id: '4', imageSrc: learning4, alt: 'Tiny kicks, big dreams' },
+  { id: '1', imageSrc: learning1, alt: 'لبخند کودک' },
+  { id: '2', imageSrc: learning2, alt: 'آزاد کردن خلاقیت' },
+  { id: '3', imageSrc: learning3, alt: 'ثبت‌نام آموزشی' },
+  { id: '4', imageSrc: learning4, alt: 'روز کودک' },
+  { id: '5', imageSrc: learning5, alt: 'روز کودک و بازی' },
 ]
 
 export const homeContentCards: HomeContentCard[] = [
