@@ -59,7 +59,7 @@ function BatteryIcon() {
 export function MobileStatusBar() {
   return (
     <div
-      className="flex h-8 shrink-0 items-end justify-between bg-home-bg px-7 pb-1 pt-1.5 text-home-heading"
+      className="flex h-8 shrink-0 items-end justify-between bg-transparent px-7 pb-1 pt-1.5 text-home-heading"
       dir="ltr"
       aria-hidden
     >

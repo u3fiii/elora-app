@@ -110,38 +110,38 @@ export function HomeScreen() {
 
   return (
     <div className="relative flex h-dvh w-full min-w-0 flex-col overflow-hidden bg-home-bg font-vazir text-home-heading">
-      <div className="relative z-30 shrink-0 border-b border-[#E8E4DC] bg-home-bg">
-        <MobileStatusBar />
-        <div className="pt-3">
-          <HomeHeader
-            childProfiles={homeChildren}
-            activeChildId={activeChildId}
-            onSelectChild={setActiveChildId}
-          />
-          <div
-            className={clsx(
-              'grid transition-[grid-template-rows] duration-300 ease-out',
-              greetingVisible ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
-            )}
-          >
-            <div
-              className={clsx(
-                'overflow-hidden transition-[opacity,transform] duration-300 ease-out',
-                greetingVisible
-                  ? 'translate-y-0 opacity-100'
-                  : '-translate-y-2 opacity-0',
-              )}
-            >
-              <HomeGreeting parentName={parentName} date={homeGreetingDate} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div
         ref={scrollRef}
         className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overflow-x-hidden pb-28"
       >
+        <header className="sticky top-0 z-30 border-b border-white/60 bg-white/55 shadow-[0_4px_24px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-xl backdrop-saturate-150">
+          <MobileStatusBar />
+          <div className="pt-3">
+            <HomeHeader
+              childProfiles={homeChildren}
+              activeChildId={activeChildId}
+              onSelectChild={setActiveChildId}
+            />
+            <div
+              className={clsx(
+                'grid transition-[grid-template-rows] duration-300 ease-out',
+                greetingVisible ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+              )}
+            >
+              <div
+                className={clsx(
+                  'overflow-hidden transition-[opacity,transform] duration-300 ease-out',
+                  greetingVisible
+                    ? 'translate-y-0 opacity-100'
+                    : '-translate-y-2 opacity-0',
+                )}
+              >
+                <HomeGreeting parentName={parentName} date={homeGreetingDate} />
+              </div>
+            </div>
+          </div>
+        </header>
+
         <HomeTodoSection
           activeSegment={activeSegment}
           activeChildId={activeChildId}
@@ -160,7 +160,6 @@ export function HomeScreen() {
         <HomeGrowthPathSection calendar={growthPathCalendar} />
 
         <HomeLearningSection items={homeLearningItems} />
-
       </div>
 
       <HomeBottomNav activeTab={activeNavTab} onChange={handleNavChange} />
