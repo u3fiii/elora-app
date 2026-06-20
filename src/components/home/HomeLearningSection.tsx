@@ -8,7 +8,7 @@ interface HomeLearningSectionProps {
 export function HomeLearningSection({ items }: HomeLearningSectionProps) {
   return (
     <section className="mt-8">
-      <div className="mb-4 flex items-center justify-between px-[18px]">
+      <div className="mb-4 flex items-center justify-between pe-5 ps-7">
         <h2 className="text-base font-extrabold text-home-heading">
           یادگیری و آموزش
         </h2>
@@ -22,7 +22,7 @@ export function HomeLearningSection({ items }: HomeLearningSectionProps) {
         </button>
       </div>
 
-      <div className="scrollbar-hide flex gap-3 overflow-x-auto px-[18px] pb-1">
+      <div className="scrollbar-hide flex gap-3 overflow-x-auto px-5 pb-1">
         {items.map((item) => (
           <button
             key={item.id}

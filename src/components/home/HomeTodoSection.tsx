@@ -3,6 +3,8 @@ import { motion, type Variants } from 'framer-motion'
 import { ChevronLeft, Flame } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { HomeSegment, HomeTask } from '../../types'
+import { playAllTasksDoneSound } from '../../utils/playAllTasksDoneSound'
+import { playTaskDoneSound } from '../../utils/playTaskDoneSound'
 import { formatPersianNumber } from '../../utils/jalali'
 import { wizardItemVariants } from '../wizard/animation/wizardAnimation'
 import { AllTasksDoneDialog } from './AllTasksDoneDialog'
@@ -97,16 +99,28 @@ export function HomeTodoSection({
   const openTask = activeTasks.find((task) => task.id === openTaskId) ?? null
 
   const toggleTask = (id: string) => {
+    const toggledTask = activeTasks.find((task) => task.id === id)
+    if (!toggledTask) return
+
+    const nextCompleted = !toggledTask.completed
+    const willAllBeDone =
+      nextCompleted &&
+      activeTasks.every((task) => task.id === id || task.completed)
+
+    if (nextCompleted) {
+      if (willAllBeDone) {
+        playAllTasksDoneSound()
+      } else {
+        playTaskDoneSound()
+      }
+
+      setPoppingId(id)
+      window.setTimeout(() => setPoppingId(null), 280)
+    }
+
     onActiveTasksChange(
       activeTasks.map((task) => {
         if (task.id !== id) return task
-
-        const nextCompleted = !task.completed
-        if (nextCompleted) {
-          setPoppingId(id)
-          window.setTimeout(() => setPoppingId(null), 280)
-        }
-
         return { ...task, completed: nextCompleted }
       }),
     )
@@ -139,17 +153,17 @@ export function HomeTodoSection({
               key={task.id}
               variants={wizardItemVariants}
               className={clsx(
-                'flex items-center gap-3 rounded-[12px] px-3 py-3 shadow-[0_1px_6px_rgba(0,0,0,0.05)] transition-colors duration-200',
-                task.completed ? 'bg-home-doneBg' : 'bg-white',
+                'flex items-center gap-3 rounded-[12px] px-3 py-3 shadow-[0_1px_6px_rgba(0,0,0,0.05)] transition-all duration-300',
+                task.completed ? 'bg-white/55' : 'bg-white',
               )}
             >
               <button
                 type="button"
                 onClick={() => toggleTask(task.id)}
                 className={clsx(
-                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200',
+                  'relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200',
                   task.completed
-                    ? clsx(task.colorClass, 'border-transparent text-white')
+                    ? 'border-transparent bg-home-teal text-white'
                     : 'border-[#D8D4CA] bg-white',
                   poppingId === task.id && 'animate-task-check-pop',
                 )}
@@ -172,27 +186,51 @@ export function HomeTodoSection({
                 ) : null}
               </button>
 
-              <button
-                type="button"
-                onClick={() => toggleTask(task.id)}
+              <div
                 className={clsx(
-                  'min-w-0 flex-1 text-right text-xs leading-snug transition-colors',
-                  task.completed
-                    ? 'font-medium text-home-teal'
-                    : 'font-medium text-home-heading',
+                  'flex min-w-0 flex-1 items-center gap-3 transition-opacity duration-300',
+                  task.completed && 'opacity-45',
                 )}
               >
-                {task.label}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => toggleTask(task.id)}
+                  className="min-w-0 flex-1 text-right text-xs leading-snug"
+                >
+                  <span className="relative inline-block max-w-full">
+                    <span
+                      className={clsx(
+                        'font-medium transition-colors duration-300',
+                        task.completed
+                          ? 'text-home-muted'
+                          : 'text-home-heading',
+                      )}
+                    >
+                      {task.label}
+                    </span>
+                    {task.completed ? (
+                      <span
+                        aria-hidden
+                        className={clsx(
+                          'pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 origin-right bg-home-muted',
+                          poppingId === task.id
+                            ? 'animate-task-strike'
+                            : 'scale-x-100',
+                        )}
+                      />
+                    ) : null}
+                  </span>
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setOpenTaskId(task.id)}
-                className="flex shrink-0 items-center gap-0.5 rounded-[8px] bg-[#FAF9F7] px-2.5 py-1 text-[10px] text-home-muted transition-colors hover:bg-[#F3EFE8]"
-              >
-                <span>بیشتر</span>
-                <ChevronLeft className="h-3 w-3" />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setOpenTaskId(task.id)}
+                  className="flex shrink-0 items-center gap-0.5 rounded-[8px] bg-[#FAF9F7] px-2.5 py-1 text-[10px] text-home-muted transition-colors hover:bg-[#F3EFE8]"
+                >
+                  <span>بیشتر</span>
+                  <ChevronLeft className="h-3 w-3" />
+                </button>
+              </div>
             </motion.li>
           ))}
 

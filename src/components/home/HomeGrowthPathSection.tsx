@@ -11,8 +11,8 @@ export function HomeGrowthPathSection({ calendar }: HomeGrowthPathSectionProps) 
   const navigate = useNavigate()
 
   return (
-    <section className="mt-8 px-[18px]">
-      <div className="mb-4 flex items-center justify-between">
+    <section className="mt-8">
+      <div className="mb-4 flex items-center justify-between pe-5 ps-7">
         <h2 className="text-base font-extrabold text-home-heading">مسیر رشد</h2>
 
         <button
@@ -25,12 +25,14 @@ export function HomeGrowthPathSection({ calendar }: HomeGrowthPathSectionProps) 
         </button>
       </div>
 
-      <GrowthCalendar
-        year={calendar.year}
-        month={calendar.month}
-        today={calendar.today}
-        eventDays={calendar.eventDays}
-      />
+      <div className="px-5">
+        <GrowthCalendar
+          year={calendar.year}
+          month={calendar.month}
+          today={calendar.today}
+          eventDays={calendar.eventDays}
+        />
+      </div>
     </section>
   )
 }

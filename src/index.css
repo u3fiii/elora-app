@@ -90,6 +90,11 @@
   .animate-task-check-pop {
     animation: task-check-pop 0.28s ease-out;
   }
+
+  .animate-task-strike {
+    animation: task-strike 0.35s ease-out forwards;
+    transform: scaleX(0);
+  }
 }
 
 @keyframes wizard-input-pulse {
@@ -125,6 +130,12 @@
 
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes task-strike {
+  to {
+    transform: scaleX(1);
   }
 }
 
