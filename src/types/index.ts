@@ -53,8 +53,7 @@ export interface HomeChild {
   id: string
   name: string
   ageLabel: string
-  avatarLetter: string
-  avatarClass: string
+  avatarImage: string
 }
 
 export interface HomeTask {

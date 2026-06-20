@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { useRef } from 'react'
 import { LayoutGroup, motion } from 'framer-motion'
 import {
   BookOpenIcon as BookOpenOutlineIcon,
@@ -15,10 +16,11 @@ import {
   UserIcon as UserSolidIcon,
 } from '@heroicons/react/24/solid'
 import type { HomeNavTab } from '../../types'
+import { getTabSwitchDirection } from '../../utils/mainTabPageTransition'
 
 interface HomeBottomNavProps {
   activeTab: HomeNavTab
-  onChange: (tab: HomeNavTab) => void
+  onChange: (tab: HomeNavTab, direction: number) => void
 }
 
 type NavIconComponent = typeof HomeOutlineIcon
@@ -61,6 +63,13 @@ const navItems: {
   },
 ]
 
+const ACTIVE_PILL_TRANSITION = {
+  type: 'spring' as const,
+  stiffness: 380,
+  damping: 23,
+  mass: 0.98,
+}
+
 interface NavIconProps {
   outlineIcon: NavIconComponent
   solidIcon: NavIconComponent
@@ -74,10 +83,19 @@ function NavIcon({ outlineIcon: OutlineIcon, solidIcon: SolidIcon, active }: Nav
 }
 
 export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
+  const tabButtonRefs = useRef<Partial<Record<HomeNavTab, HTMLButtonElement | null>>>({})
+
+  const handleTabPress = (tab: HomeNavTab) => {
+    if (tab === activeTab) return
+
+    const direction = getTabSwitchDirection(activeTab, tab, tabButtonRefs.current)
+    onChange(tab, direction)
+  }
+
   return (
     <nav
       dir="ltr"
-      className="absolute inset-x-4 bottom-4 z-40 rounded-[50px] border border-white/60 bg-white/55 px-2 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-xl backdrop-saturate-150"
+      className="absolute inset-x-4 bottom-4 z-50 rounded-[50px] border border-white/60 bg-white/55 px-2 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-xl backdrop-saturate-150"
     >
       <LayoutGroup id="home-bottom-nav">
         <div className="flex items-center">
@@ -87,8 +105,11 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
             return (
               <button
                 key={id}
+                ref={(element) => {
+                  tabButtonRefs.current[id] = element
+                }}
                 type="button"
-                onClick={() => onChange(id)}
+                onClick={() => handleTabPress(id)}
                 className={clsx(
                   'relative flex flex-1 flex-col items-center gap-1 rounded-[28px] px-1 py-1.5 transition-colors duration-200',
                   isActive ? 'text-white' : 'text-home-teal hover:bg-white/45',
@@ -98,12 +119,7 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
                   <motion.span
                     layoutId="home-bottom-nav-active"
                     className="absolute inset-0 rounded-[28px] bg-home-teal/90 shadow-[0_2px_10px_rgba(110,183,188,0.35)]"
-                    transition={{
-                      type: 'spring',
-                      stiffness: 460,
-                      damping: 34,
-                      mass: 0.72,
-                    }}
+                    transition={ACTIVE_PILL_TRANSITION}
                   />
                 ) : null}
 
@@ -113,7 +129,7 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
                     solidIcon={solidIcon}
                     active={isActive}
                   />
-                  <span className="text-[10px] font-semibold">{label}</span>
+                  <span className="text-[10px] font-semibold leading-none">{label}</span>
                 </span>
               </button>
             )

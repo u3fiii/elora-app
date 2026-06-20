@@ -14,28 +14,28 @@ import carousel2 from '../assets/carousel/carousel-2.png'
 import carousel3 from '../assets/carousel/carousel-3.png'
 import carousel4 from '../assets/carousel/carousel-4.png'
 import carousel5 from '../assets/carousel/carousel-5.png'
+import childLiamAvatar from '../assets/avatars/child-liam.png'
+import childNimaAvatar from '../assets/avatars/child-nima.png'
+import childSaraAvatar from '../assets/avatars/child-sara.png'
 
 export const homeChildren: HomeChild[] = [
   {
     id: 'liam',
     name: 'لیام',
     ageLabel: '۱۴ ماهه',
-    avatarLetter: 'ل',
-    avatarClass: 'bg-gradient-to-br from-home-mint to-home-teal',
+    avatarImage: childLiamAvatar,
   },
   {
     id: 'sara',
     name: 'سارا',
     ageLabel: '۳ سال',
-    avatarLetter: 'س',
-    avatarClass: 'bg-gradient-to-br from-home-pink to-[#E896B4]',
+    avatarImage: childSaraAvatar,
   },
   {
     id: 'nima',
     name: 'نیما',
     ageLabel: '۵ سال',
-    avatarLetter: 'ن',
-    avatarClass: 'bg-gradient-to-br from-home-yellow to-home-peach',
+    avatarImage: childNimaAvatar,
   },
 ]
 

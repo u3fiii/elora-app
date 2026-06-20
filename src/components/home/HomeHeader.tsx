@@ -9,6 +9,21 @@ interface HomeHeaderProps {
   onSelectChild: (id: string) => void
 }
 
+interface ChildAvatarProps {
+  child: HomeChild
+  className?: string
+}
+
+function ChildAvatar({ child, className }: ChildAvatarProps) {
+  return (
+    <img
+      src={child.avatarImage}
+      alt={child.name}
+      className={clsx('h-7 w-7 shrink-0 rounded-full object-cover', className)}
+    />
+  )
+}
+
 export function HomeHeader({
   childProfiles,
   activeChildId,
@@ -40,14 +55,7 @@ export function HomeHeader({
           onClick={() => setOpen((current) => !current)}
           className="flex items-center gap-2 rounded-full border border-home-border bg-white py-1 pe-3 ps-1.5 transition-shadow hover:shadow-[0_2px_14px_rgba(0,0,0,0.06)]"
         >
-          <div
-            className={clsx(
-              'flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white',
-              activeChild.avatarClass,
-            )}
-          >
-            {activeChild.avatarLetter}
-          </div>
+          <ChildAvatar child={activeChild} />
           <div className="text-right leading-tight">
             <p className="text-xs font-bold text-home-heading">
               {activeChild.name}
@@ -80,14 +88,7 @@ export function HomeHeader({
                     isActive ? 'bg-home-doneBg' : 'hover:bg-home-pill',
                   )}
                 >
-                  <div
-                    className={clsx(
-                      'flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white',
-                      child.avatarClass,
-                    )}
-                  >
-                    {child.avatarLetter}
-                  </div>
+                  <ChildAvatar child={child} />
                   <div className="leading-tight">
                     <p className="text-xs font-bold text-home-heading">
                       {child.name}

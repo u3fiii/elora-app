@@ -1,0 +1,1 @@
+export const HOME_GREETING_SLOT_HEIGHT = 54

@@ -6,7 +6,6 @@ import type { HomeSegment, HomeTask } from '../../types'
 import { playAllTasksDoneSound } from '../../utils/playAllTasksDoneSound'
 import { playTaskDoneSound } from '../../utils/playTaskDoneSound'
 import { formatPersianNumber } from '../../utils/jalali'
-import { wizardItemVariants } from '../wizard/animation/wizardAnimation'
 import { AllTasksDoneDialog } from './AllTasksDoneDialog'
 import { HomeSegmentedToggle } from './HomeSegmentedToggle'
 import { TaskDetailSheet } from './TaskDetailSheet'
@@ -19,6 +18,14 @@ const homeTaskListVariants: Variants = {
     transition: {
       staggerChildren: HOME_TASK_STAGGER,
     },
+  },
+}
+
+const homeTaskItemVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.3, ease: 'easeOut' },
   },
 }
 
@@ -151,10 +158,10 @@ export function HomeTodoSection({
           {activeTasks.map((task) => (
             <motion.li
               key={task.id}
-              variants={wizardItemVariants}
+              variants={homeTaskItemVariants}
               className={clsx(
                 'flex items-center gap-3 rounded-[12px] px-3 py-3 shadow-[0_1px_6px_rgba(0,0,0,0.05)] transition-all duration-300',
-                task.completed ? 'bg-white/55' : 'bg-white',
+                task.completed ? 'bg-white/50' : 'bg-white',
               )}
             >
               <button
@@ -186,12 +193,7 @@ export function HomeTodoSection({
                 ) : null}
               </button>
 
-              <div
-                className={clsx(
-                  'flex min-w-0 flex-1 items-center gap-3 transition-opacity duration-300',
-                  task.completed && 'opacity-45',
-                )}
-              >
+              <div className="flex min-w-0 flex-1 items-center gap-3">
                 <button
                   type="button"
                   onClick={() => toggleTask(task.id)}
@@ -202,7 +204,7 @@ export function HomeTodoSection({
                       className={clsx(
                         'font-medium transition-colors duration-300',
                         task.completed
-                          ? 'text-home-muted'
+                          ? 'text-home-heading/70'
                           : 'text-home-heading',
                       )}
                     >
@@ -212,7 +214,7 @@ export function HomeTodoSection({
                       <span
                         aria-hidden
                         className={clsx(
-                          'pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 origin-right bg-home-muted',
+                          'pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 origin-right bg-home-heading/70',
                           poppingId === task.id
                             ? 'animate-task-strike'
                             : 'scale-x-100',
@@ -225,7 +227,10 @@ export function HomeTodoSection({
                 <button
                   type="button"
                   onClick={() => setOpenTaskId(task.id)}
-                  className="flex shrink-0 items-center gap-0.5 rounded-[8px] bg-[#FAF9F7] px-2.5 py-1 text-[10px] text-home-muted transition-colors hover:bg-[#F3EFE8]"
+                  className={clsx(
+                    'flex shrink-0 items-center gap-0.5 rounded-[8px] bg-[#FAF9F7] px-2.5 py-1 text-[10px] text-home-muted transition-colors hover:bg-[#F3EFE8]',
+                    task.completed && 'opacity-45',
+                  )}
                 >
                   <span>بیشتر</span>
                   <ChevronLeft className="h-3 w-3" />
@@ -235,7 +240,7 @@ export function HomeTodoSection({
           ))}
 
           <motion.li
-            variants={wizardItemVariants}
+            variants={homeTaskItemVariants}
             className="flex justify-center"
           >
             <div className="flex items-center gap-1.5 rounded-full bg-home-streakBg px-3 py-1.5">
