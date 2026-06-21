@@ -5,16 +5,16 @@ import {
   BookOpenIcon as BookOpenOutlineIcon,
   CalendarIcon as CalendarOutlineIcon,
   ChatBubbleLeftIcon as ChatBubbleLeftOutlineIcon,
-  HomeIcon as HomeOutlineIcon,
   UserIcon as UserOutlineIcon,
 } from '@heroicons/react/24/outline'
 import {
   BookOpenIcon as BookOpenSolidIcon,
   CalendarIcon as CalendarSolidIcon,
   ChatBubbleLeftIcon as ChatBubbleLeftSolidIcon,
-  HomeIcon as HomeSolidIcon,
   UserIcon as UserSolidIcon,
 } from '@heroicons/react/24/solid'
+import homeLogoTeal from '../../assets/nav/home-logo-teal.png'
+import homeLogoWhite from '../../assets/nav/home-logo-white.png'
 import type { HomeNavTab } from '../../types'
 import { getTabSwitchDirection } from '../../utils/mainTabPageTransition'
 
@@ -23,13 +23,14 @@ interface HomeBottomNavProps {
   onChange: (tab: HomeNavTab, direction: number) => void
 }
 
-type NavIconComponent = typeof HomeOutlineIcon
+type NavIconComponent = typeof UserOutlineIcon
 
 const navItems: {
   id: HomeNavTab
   label: string
-  outlineIcon: NavIconComponent
-  solidIcon: NavIconComponent
+  outlineIcon?: NavIconComponent
+  solidIcon?: NavIconComponent
+  useLogo?: boolean
 }[] = [
   {
     id: 'profile',
@@ -46,8 +47,7 @@ const navItems: {
   {
     id: 'home',
     label: 'خانه',
-    outlineIcon: HomeOutlineIcon,
-    solidIcon: HomeSolidIcon,
+    useLogo: true,
   },
   {
     id: 'calendar',
@@ -76,6 +76,17 @@ interface NavIconProps {
   active: boolean
 }
 
+function HomeNavLogo({ active }: { active: boolean }) {
+  return (
+    <img
+      src={active ? homeLogoWhite : homeLogoTeal}
+      alt=""
+      className="h-5 w-5 object-contain"
+      aria-hidden
+    />
+  )
+}
+
 function NavIcon({ outlineIcon: OutlineIcon, solidIcon: SolidIcon, active }: NavIconProps) {
   const Icon = active ? SolidIcon : OutlineIcon
 
@@ -99,7 +110,7 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
     >
       <LayoutGroup id="home-bottom-nav">
         <div className="flex items-center">
-          {navItems.map(({ id, label, outlineIcon, solidIcon }) => {
+          {navItems.map(({ id, label, outlineIcon, solidIcon, useLogo }) => {
             const isActive = activeTab === id
 
             return (
@@ -124,11 +135,15 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
                 ) : null}
 
                 <span className="relative z-10 flex flex-col items-center gap-1">
-                  <NavIcon
-                    outlineIcon={outlineIcon}
-                    solidIcon={solidIcon}
-                    active={isActive}
-                  />
+                  {useLogo ? (
+                    <HomeNavLogo active={isActive} />
+                  ) : (
+                    <NavIcon
+                      outlineIcon={outlineIcon!}
+                      solidIcon={solidIcon!}
+                      active={isActive}
+                    />
+                  )}
                   <span className="text-[10px] font-semibold leading-none">{label}</span>
                 </span>
               </button>

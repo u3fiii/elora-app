@@ -122,7 +122,7 @@ export function HomeTodoSection({
   }
 
   return (
-    <section className="px-[18px] pt-12">
+    <section className="px-[18px] pt-6">
       <h2 className="mb-3 mr-2 text-right text-sm font-bold text-home-heading">
         امروز ۳ کار برای تو
       </h2>

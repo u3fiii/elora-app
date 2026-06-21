@@ -88,8 +88,6 @@ export function HomeScreen() {
           </div>
         </header>
 
-        <HomeForYouCarousel cards={homeContentCards} />
-
         <HomeTodoSection
           activeChildId={activeChildId}
           babyName={childName}
@@ -97,7 +95,10 @@ export function HomeScreen() {
           onTasksChange={handleTasksChange}
         />
 
-        <HomeLearningSection items={homeLearningItems} />      </div>
+        <HomeForYouCarousel cards={homeContentCards} />
+
+        <HomeLearningSection items={homeLearningItems} />
+      </div>
     </div>
   )
 }
