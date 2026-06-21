@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, FileText } from 'lucide-react'
 import clsx from 'clsx'
+import { createPortal } from 'react-dom'
 import type { HomeTask } from '../../types'
 
 interface TaskDetailSheetProps {
@@ -19,10 +20,10 @@ const panelTransition = {
 } as const
 
 export function TaskDetailSheet({ task, onClose }: TaskDetailSheetProps) {
-  return (
+  return createPortal(
     <AnimatePresence>
       {task ? (
-        <div className="fixed inset-0 z-50 flex flex-col justify-end">
+        <div className="fixed inset-0 z-[100] flex flex-col justify-end">
           <motion.button
             type="button"
             className="absolute inset-0 bg-black/40"
@@ -61,8 +62,8 @@ export function TaskDetailSheet({ task, onClose }: TaskDetailSheetProps) {
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-home-mint text-white">
                   <FileText className="h-5 w-5" />
                 </div>
-                <div className="flex-1">
-                  <p className="text-[11px] text-home-muted">مقاله پیشنهادی</p>
+                <div className="flex flex-1 flex-col gap-1">
+                  <p className="text-[11px] text-home-mint">مقاله پیشنهادی</p>
                   <p className="text-sm font-bold text-home-heading">
                     {task.articleLink.title}
                   </p>
@@ -81,6 +82,7 @@ export function TaskDetailSheet({ task, onClose }: TaskDetailSheetProps) {
           </motion.div>
         </div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   )
 }

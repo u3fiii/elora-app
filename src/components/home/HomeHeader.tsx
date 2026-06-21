@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Bell, ChevronDown, Search } from 'lucide-react'
+import { Bell, ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { HomeChild } from '../../types'
 
@@ -105,13 +105,6 @@ export function HomeHeader({
       </div>
 
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-home-chipBorder bg-white text-home-heading transition-colors hover:bg-home-pill"
-          aria-label="جستجو"
-        >
-          <Search className="h-[18px] w-[18px]" strokeWidth={2} />
-        </button>
         <button
           type="button"
           className="relative flex h-9 w-9 items-center justify-center rounded-full border border-home-chipBorder bg-white text-home-heading transition-colors hover:bg-home-pill"

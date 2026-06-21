@@ -1,10 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import type { HomeSegment } from '../../types'
 
 interface AllTasksDoneDialogProps {
   open: boolean
-  segment: HomeSegment
-  babyName: string
   onDismiss: () => void
 }
 
@@ -64,17 +61,7 @@ function TasksDoneIllustration() {
   )
 }
 
-export function AllTasksDoneDialog({
-  open,
-  segment,
-  babyName,
-  onDismiss,
-}: AllTasksDoneDialogProps) {
-  const description =
-    segment === 'baby'
-      ? `امروز همه کارهای ${babyName} رو تکمیل کردی. فردا با لیست جدید دوباره کنارش باش.`
-      : 'امروز همه کارهای خودت رو تکمیل کردی. فردا با انرژی تازه ادامه بده.'
-
+export function AllTasksDoneDialog({ open, onDismiss }: AllTasksDoneDialogProps) {
   return (
     <AnimatePresence>
       {open ? (
@@ -114,7 +101,7 @@ export function AllTasksDoneDialog({
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...panelTransition, delay: 0.18 }}
             >
-              {description}
+              امروز هر ۳ کار رو تکمیل کردی. فردا با لیست جدید دوباره شروع کن.
             </motion.p>
 
             <motion.button

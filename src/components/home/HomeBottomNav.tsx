@@ -95,7 +95,7 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
   return (
     <nav
       dir="ltr"
-      className="absolute inset-x-4 bottom-4 z-50 rounded-[50px] border border-white/60 bg-white/55 px-2 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-xl backdrop-saturate-150"
+      className="absolute inset-x-4 bottom-4 z-50 rounded-[50px] border border-home-border bg-white px-2 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
     >
       <LayoutGroup id="home-bottom-nav">
         <div className="flex items-center">
@@ -112,7 +112,7 @@ export function HomeBottomNav({ activeTab, onChange }: HomeBottomNavProps) {
                 onClick={() => handleTabPress(id)}
                 className={clsx(
                   'relative flex flex-1 flex-col items-center gap-1 rounded-[28px] px-1 py-1.5 transition-colors duration-200',
-                  isActive ? 'text-white' : 'text-home-teal hover:bg-white/45',
+                  isActive ? 'text-white' : 'text-home-teal hover:bg-home-pill',
                 )}
               >
                 {isActive ? (

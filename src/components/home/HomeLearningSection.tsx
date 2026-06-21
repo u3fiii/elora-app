@@ -7,7 +7,7 @@ interface HomeLearningSectionProps {
 
 export function HomeLearningSection({ items }: HomeLearningSectionProps) {
   return (
-    <section className="mt-8">
+    <section className="mt-12">
       <div className="mb-4 flex items-center justify-between pe-5 ps-7">
         <h2 className="text-base font-extrabold text-home-heading">
           یادگیری و آموزش

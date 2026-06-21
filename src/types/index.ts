@@ -62,6 +62,7 @@ export interface HomeTask {
   colorClass: string
   completed: boolean
   description: string
+  subject: 'child' | 'parent'
   articleLink?: {
     title: string
   }
@@ -78,8 +79,6 @@ export interface HomeContentCard {
   imageSrc: string
   alt: string
 }
-
-export type HomeSegment = 'baby' | 'parent'
 
 export type HomeNavTab = 'profile' | 'chat' | 'home' | 'calendar' | 'library'
 
