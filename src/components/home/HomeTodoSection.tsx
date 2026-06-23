@@ -1,12 +1,24 @@
 import clsx from 'clsx'
-import { motion, type Variants } from 'framer-motion'
-import { Info } from 'lucide-react'
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import { CalendarDaysIcon } from '@heroicons/react/24/solid'
+import { AnimatePresence, motion, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import infoIcon from '../../assets/icons/info-outline.png'
 import type { HomeTask } from '../../types'
 import { playAllTasksDoneSound } from '../../utils/playAllTasksDoneSound'
 import { playTaskDoneSound } from '../../utils/playTaskDoneSound'
 import { AllTasksDoneDialog } from './AllTasksDoneDialog'
 import { TaskDetailSheet } from './TaskDetailSheet'
+
+const PROGRESS_RADIUS = 10
+const PROGRESS_STROKE = 3.5
+const PROGRESS_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS
+
+const TASK_CARD_THEMES = [
+  { card: 'bg-[#F7F7F7]' },
+  { card: 'bg-[#F7F7F7]' },
+  { card: 'bg-[#F7F7F7]' },
+] as const
 
 const HOME_TASK_STAGGER = 0.05
 
@@ -30,6 +42,7 @@ const homeTaskItemVariants: Variants = {
 interface HomeTodoSectionProps {
   activeChildId: string
   babyName: string
+  date: string
   tasks: HomeTask[]
   onTasksChange: (tasks: HomeTask[]) => void
 }
@@ -41,32 +54,83 @@ function TaskSubjectTag({
   task: HomeTask
   babyName: string
 }) {
-  const isChildTask = task.subject === 'child'
-
   return (
     <span
       className={clsx(
-        'shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold',
-        isChildTask
-          ? 'bg-home-mint/35 text-home-teal'
-          : 'bg-home-lavender/35 text-home-heading/75',
+        'shrink-0 rounded-full bg-[#E8E8E8] px-2 py-0.5 text-[10px] font-semibold text-[#6E6E6E]',
         task.completed && 'opacity-60',
       )}
     >
-      {isChildTask ? babyName : 'خودت'}
+      {task.subject === 'child' ? babyName : 'خودت'}
     </span>
+  )
+}
+
+function TasksProgressRing({
+  completed,
+  total,
+}: {
+  completed: number
+  total: number
+}) {
+  const progress = total > 0 ? completed / total : 0
+  const strokeDashoffset = PROGRESS_CIRCUMFERENCE * (1 - progress)
+  const remaining = total - completed
+
+  return (
+    <div
+      className="relative size-10 shrink-0"
+      aria-label={`${completed} از ${total} کار انجام شده`}
+    >
+      <svg
+        className="h-full w-full -rotate-90"
+        viewBox="0 0 36 36"
+        aria-hidden
+      >
+        <circle
+          cx="18"
+          cy="18"
+          r={PROGRESS_RADIUS}
+          fill="none"
+          stroke="#E8E4DC"
+          strokeWidth={PROGRESS_STROKE}
+        />
+        <circle
+          cx="18"
+          cy="18"
+          r={PROGRESS_RADIUS}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={PROGRESS_STROKE}
+          strokeLinecap="round"
+          strokeDasharray={PROGRESS_CIRCUMFERENCE}
+          strokeDashoffset={strokeDashoffset}
+          className="text-home-teal transition-[stroke-dashoffset] duration-500 ease-out"
+        />
+      </svg>
+      <span className="absolute inset-0 flex translate-y-px items-center justify-center">
+        <span
+          key={remaining}
+          className="animate-task-count-bounce text-[10px] font-bold leading-none tabular-nums text-home-muted"
+        >
+          {remaining}
+        </span>
+      </span>
+    </div>
   )
 }
 
 export function HomeTodoSection({
   activeChildId,
   babyName,
+  date,
   tasks,
   onTasksChange,
 }: HomeTodoSectionProps) {
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const [poppingId, setPoppingId] = useState<string | null>(null)
   const [showAllDoneDialog, setShowAllDoneDialog] = useState(false)
+  const [isTasksExpanded, setIsTasksExpanded] = useState(true)
 
   const prevAllDoneRef = useRef(
     tasks.length > 0 && tasks.every((task) => task.completed),
@@ -80,6 +144,7 @@ export function HomeTodoSection({
     if (prevChildRef.current === activeChildId) return
 
     setOpenTaskId(null)
+    setIsTasksExpanded(true)
     prevAllDoneRef.current = tasks.length > 0 && tasks.every((task) => task.completed)
     prevChildRef.current = activeChildId
   }, [activeChildId, tasks])
@@ -93,6 +158,7 @@ export function HomeTodoSection({
   }, [allDone])
 
   const openTask = tasks.find((task) => task.id === openTaskId) ?? null
+  const completedCount = tasks.filter((task) => task.completed).length
 
   const toggleTask = (id: string) => {
     const toggledTask = tasks.find((task) => task.id === id)
@@ -122,116 +188,162 @@ export function HomeTodoSection({
   }
 
   return (
-    <section className="px-[18px] pt-6">
-      <h2 className="mb-3 mr-2 text-right text-sm font-bold text-home-heading">
-        امروز ۳ کار برای تو
-      </h2>
+    <section className="space-y-2 px-4 pt-4">
+      <div className="flex items-center justify-between rounded-[16px] bg-white px-4 py-3">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-home-teal/15 text-home-teal">
+            <CalendarDaysIcon className="h-5 w-5" aria-hidden />
+          </div>
+          <div className="text-right">
+            <h2 className="text-sm font-bold text-home-heading">کارهای امروز</h2>
+            <p className="mt-0.5 text-xs text-home-muted">{date}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <TasksProgressRing completed={completedCount} total={tasks.length} />
+          <button
+            type="button"
+            onClick={() => setIsTasksExpanded((current) => !current)}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-home-muted transition-colors hover:bg-home-pill hover:text-home-heading"
+            aria-expanded={isTasksExpanded}
+            aria-label={isTasksExpanded ? 'بستن لیست کارها' : 'نمایش لیست کارها'}
+          >
+            <ChevronUpDownIcon className="h-5 w-5" strokeWidth={2} aria-hidden />
+          </button>
+        </div>
+      </div>
 
-      <motion.ul
-        key={activeChildId}
-        className="space-y-2.5"
-        variants={homeTaskListVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {tasks.map((task) => (
+      <AnimatePresence initial={false}>
+        {isTasksExpanded ? (
+          <motion.div
+            key={`${activeChildId}-tasks`}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+      <div className="rounded-[16px] bg-white p-3">
+        <motion.ul
+          key={activeChildId}
+          className="space-y-2.5"
+          variants={homeTaskListVariants}
+          initial="hidden"
+          animate="visible"
+        >
+        {tasks.map((task, index) => {
+          const theme = TASK_CARD_THEMES[index % TASK_CARD_THEMES.length]
+
+          return (
           <motion.li
             key={task.id}
             variants={homeTaskItemVariants}
-            className={clsx(
-              'relative box-border flex items-center gap-3 rounded-[12px] border bg-white px-3 py-3',
-              'transition-[border-color,opacity,color] duration-300 ease-out',
+            role="button"
+            tabIndex={0}
+            onClick={() => toggleTask(task.id)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                toggleTask(task.id)
+              }
+            }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 32 }}
+            aria-label={
               task.completed
-                ? 'border-transparent'
-                : 'border-solid border-home-border',
+                ? `${task.label} — انجام شده، برای لغو کلیک کنید`
+                : `${task.label} — برای انجام کلیک کنید`
+            }
+            className={clsx(
+              'relative flex cursor-pointer items-center gap-3 rounded-[12px] px-3 py-2.5 transition-colors duration-300 ease-out',
+              theme.card,
             )}
           >
-            <span
-              aria-hidden
-              className={clsx(
-                'pointer-events-none absolute inset-0 rounded-[12px] border border-dashed border-home-teal',
-                'transition-opacity duration-300 ease-out',
-                task.completed ? 'opacity-100' : 'opacity-0',
-              )}
-            />
-
-            <button
-              type="button"
-              onClick={() => toggleTask(task.id)}
-              className={clsx(
-                'relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200',
-                task.completed
-                  ? 'border-transparent bg-home-teal text-white'
-                  : 'border-[#D8D4CA] bg-white',
-                poppingId === task.id && 'animate-task-check-pop',
-              )}
-              aria-label={task.completed ? 'علامت‌گذاری نشده' : 'انجام شد'}
-            >
-              {task.completed ? (
-                <svg
-                  className="h-3 w-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={3}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              ) : null}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => toggleTask(task.id)}
-              className="flex shrink-0 items-center gap-1 text-right text-xs leading-snug"
-            >
-              <span className="relative inline-block max-w-full">
-                <span
-                  className={clsx(
-                    'font-medium transition-colors duration-300',
-                    task.completed
-                      ? 'text-home-heading/70'
-                      : 'text-home-heading',
-                  )}
-                >
-                  {task.label}
-                </span>
+            <div className="pointer-events-none flex min-w-0 flex-1 items-center gap-3 text-right">
+              <span
+                className={clsx(
+                  'relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200',
+                  task.completed
+                    ? 'border-transparent bg-home-teal text-white'
+                    : 'border-home-border bg-transparent',
+                  poppingId === task.id && 'animate-task-check-pop',
+                )}
+                aria-hidden
+              >
                 {task.completed ? (
-                  <span
+                  <svg
+                    className="h-3 w-3"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     aria-hidden
-                    className={clsx(
-                      'pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 origin-right bg-home-heading/70',
-                      poppingId === task.id
-                        ? 'animate-task-strike'
-                        : 'scale-x-100',
-                    )}
-                  />
+                  >
+                    <path
+                      d="M5 13l4 4L19 7"
+                      stroke="currentColor"
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 ) : null}
               </span>
 
-              <TaskSubjectTag task={task} babyName={babyName} />
-            </button>
+              <span className="flex shrink-0 items-center gap-1 text-xs leading-snug">
+                <span className="relative inline-block max-w-full">
+                  <span
+                    className={clsx(
+                      'font-medium transition-colors duration-300',
+                      task.completed
+                        ? 'text-home-heading/70'
+                        : 'text-home-heading',
+                    )}
+                  >
+                    {task.label}
+                  </span>
+                  {task.completed ? (
+                    <span
+                      aria-hidden
+                      className={clsx(
+                        'pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 origin-right bg-home-heading/70',
+                        poppingId === task.id
+                          ? 'animate-task-strike'
+                          : 'scale-x-100',
+                      )}
+                    />
+                  ) : null}
+                </span>
 
-            <div className="min-w-0 flex-1" aria-hidden />
+                <TaskSubjectTag task={task} babyName={babyName} />
+              </span>
+            </div>
 
             <button
               type="button"
-              onClick={() => setOpenTaskId(task.id)}
+              onClick={(event) => {
+                event.stopPropagation()
+                setOpenTaskId(task.id)
+              }}
               className={clsx(
-                'flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-home-muted transition-colors hover:bg-[#F3EFE8] hover:text-home-heading',
+                'relative z-10 flex h-9 w-9 shrink-0 -translate-x-2 items-center justify-center transition-opacity hover:opacity-80',
                 task.completed && 'opacity-45',
               )}
               aria-label="اطلاعات بیشتر"
             >
-              <Info className="h-4 w-4" strokeWidth={2} />
+              <img
+                src={infoIcon}
+                alt=""
+                className="h-6 w-6 object-contain"
+                aria-hidden
+              />
             </button>
           </motion.li>
-        ))}
-      </motion.ul>
+          )
+        })}
+        </motion.ul>
+      </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <TaskDetailSheet task={openTask} onClose={() => setOpenTaskId(null)} />
       <AllTasksDoneDialog

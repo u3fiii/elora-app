@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import clsx from 'clsx'
 import bgLogoTr from '../../assets/bg-logo-tr.png'
 import { wizardDomeConfig } from './wizardDomeConfig'
-import { wizardDotOverlayClass } from './wizardDotPattern'
 
 interface WizardShellProps {
   footer: ReactNode
@@ -47,14 +46,6 @@ export function WizardShell({
           height: blackCircle.diameter,
           top: blackCircleTop,
         }}
-        aria-hidden
-      />
-
-      <div
-        className={clsx(
-          'pointer-events-none absolute inset-0 z-[2]',
-          wizardDotOverlayClass,
-        )}
         aria-hidden
       />
 

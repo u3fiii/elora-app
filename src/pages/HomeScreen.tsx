@@ -67,7 +67,7 @@ export function HomeScreen() {
   }
 
   return (
-    <div className="relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-white font-vazir text-home-heading">
+    <div className="relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-[#F5F5F5] font-vazir text-home-heading">
       <div
         ref={scrollRef}
         className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overflow-x-hidden pb-28"
@@ -82,7 +82,6 @@ export function HomeScreen() {
             />
             <HomeCollapsibleGreeting
               parentName={parentName}
-              date={homeGreetingDate}
               isCollapsed={isGreetingCollapsed}
             />
           </div>
@@ -91,6 +90,7 @@ export function HomeScreen() {
         <HomeTodoSection
           activeChildId={activeChildId}
           babyName={childName}
+          date={homeGreetingDate}
           tasks={dailyTasks}
           onTasksChange={handleTasksChange}
         />

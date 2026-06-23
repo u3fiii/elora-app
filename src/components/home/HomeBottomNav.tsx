@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { useRef } from 'react'
+import { useRef, type CSSProperties } from 'react'
 import { LayoutGroup, motion } from 'framer-motion'
 import {
   BookOpenIcon as BookOpenOutlineIcon,
@@ -13,8 +13,7 @@ import {
   ChatBubbleLeftIcon as ChatBubbleLeftSolidIcon,
   UserIcon as UserSolidIcon,
 } from '@heroicons/react/24/solid'
-import homeLogoTeal from '../../assets/nav/home-logo-teal.png'
-import homeLogoWhite from '../../assets/nav/home-logo-white.png'
+import homeLogoMask from '../../assets/nav/home-logo-teal.png'
 import type { HomeNavTab } from '../../types'
 import { getTabSwitchDirection } from '../../utils/mainTabPageTransition'
 
@@ -78,11 +77,15 @@ interface NavIconProps {
 
 function HomeNavLogo({ active }: { active: boolean }) {
   return (
-    <img
-      src={active ? homeLogoWhite : homeLogoTeal}
-      alt=""
-      className="h-5 w-5 object-contain"
+    <span
       aria-hidden
+      className={clsx(
+        'inline-block h-5 w-5 shrink-0 bg-current',
+        '[mask-image:var(--home-logo-mask)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]',
+        '[-webkit-mask-image:var(--home-logo-mask)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]',
+        active ? 'text-white' : 'text-home-teal',
+      )}
+      style={{ '--home-logo-mask': `url(${homeLogoMask})` } as CSSProperties}
     />
   )
 }
