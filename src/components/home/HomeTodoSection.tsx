@@ -1,9 +1,8 @@
 import clsx from 'clsx'
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import { ChevronUpDownIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 import { CalendarDaysIcon } from '@heroicons/react/24/solid'
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import infoIcon from '../../assets/icons/info-outline.png'
 import type { HomeTask } from '../../types'
 import { playAllTasksDoneSound } from '../../utils/playAllTasksDoneSound'
 import { playTaskDoneSound } from '../../utils/playTaskDoneSound'
@@ -324,17 +323,12 @@ export function HomeTodoSection({
                 setOpenTaskId(task.id)
               }}
               className={clsx(
-                'relative z-10 flex h-9 w-9 shrink-0 -translate-x-2 items-center justify-center transition-opacity hover:opacity-80',
+                'relative z-10 flex h-9 w-9 shrink-0 -translate-x-2 items-center justify-center text-home-border transition-opacity hover:opacity-80',
                 task.completed && 'opacity-45',
               )}
               aria-label="اطلاعات بیشتر"
             >
-              <img
-                src={infoIcon}
-                alt=""
-                className="h-6 w-6 object-contain"
-                aria-hidden
-              />
+              <InformationCircleIcon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
             </button>
           </motion.li>
           )
