@@ -5,6 +5,7 @@ import {
   createInitialChildTasksState,
   homeChildren,
   homeContentCards,
+  homeGreetingDate,
   homeLearningItems,
   homeParentName,
   initialChildTasksById,
@@ -71,6 +72,7 @@ export function HomeScreen() {
             />
             <HomeCollapsibleGreeting
               parentName={parentName}
+              date={homeGreetingDate}
               isCollapsed={isGreetingCollapsed}
             />
           </div>

@@ -72,24 +72,6 @@ export const initialHomeTasks: HomeTask[] = [
       'چشم‌ها را ببند و ۴ ثانیه نفس بکش، ۴ ثانیه نگه دار و ۴ ثانیه بازدم کن. این کار به آرامش ذهنت کمک می‌کند.',
     articleLink: { title: 'راهنمای تنفس آرام برای والدین' },
   },
-  {
-    id: 'liam-4',
-    label: 'خواب ظهر ۱ ساعت',
-    colorClass: 'bg-home-yellow',
-    completed: false,
-    subject: 'child',
-    description:
-      'لیام در این سن به خواب ظهر منظم نیاز دارد. اتاق را تاریک و آرام کن و روتین کوتاه قبل از خواب را تکرار کن.',
-  },
-  {
-    id: 'liam-5',
-    label: 'ثبت یادداشت روزانه',
-    colorClass: 'bg-home-teal',
-    completed: false,
-    subject: 'parent',
-    description:
-      'یک یا دو جمله درباره رفتار، خواب یا غذای امروز لیام بنویس. این یادداشت‌ها بعداً به پیگیری رشد کمک می‌کند.',
-  },
 ]
 
 const saraHomeTasks: HomeTask[] = [

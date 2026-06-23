@@ -4,6 +4,7 @@ import { HOME_GREETING_SLOT_HEIGHT } from '../../utils/homeHeaderScroll'
 
 interface HomeCollapsibleGreetingProps {
   parentName: string
+  date: string
   isCollapsed: boolean
 }
 
@@ -27,6 +28,7 @@ const greetingTransition = {
 
 export function HomeCollapsibleGreeting({
   parentName,
+  date,
   isCollapsed,
 }: HomeCollapsibleGreetingProps) {
   return (
@@ -38,7 +40,7 @@ export function HomeCollapsibleGreeting({
       style={{ transformOrigin: 'top' }}
       className="h-[54px] overflow-hidden will-change-transform"
     >
-      <HomeGreeting parentName={parentName} />
+      <HomeGreeting parentName={parentName} date={date} />
     </motion.div>
   )
 }
