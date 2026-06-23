@@ -177,7 +177,7 @@ export const TaskFlowerProgress = forwardRef<
       <div className="flex justify-center">
         <svg
           viewBox="-105 -105 210 210"
-          className="h-32 w-32"
+          className="h-48 w-48"
           aria-hidden
         >
           <defs>
