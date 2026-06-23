@@ -72,6 +72,24 @@ export const initialHomeTasks: HomeTask[] = [
       'چشم‌ها را ببند و ۴ ثانیه نفس بکش، ۴ ثانیه نگه دار و ۴ ثانیه بازدم کن. این کار به آرامش ذهنت کمک می‌کند.',
     articleLink: { title: 'راهنمای تنفس آرام برای والدین' },
   },
+  {
+    id: 'liam-4',
+    label: 'خواب ظهر ۱ ساعت',
+    colorClass: 'bg-home-yellow',
+    completed: false,
+    subject: 'child',
+    description:
+      'لیام در این سن به خواب ظهر منظم نیاز دارد. اتاق را تاریک و آرام کن و روتین کوتاه قبل از خواب را تکرار کن.',
+  },
+  {
+    id: 'liam-5',
+    label: 'ثبت یادداشت روزانه',
+    colorClass: 'bg-home-teal',
+    completed: false,
+    subject: 'parent',
+    description:
+      'یک یا دو جمله درباره رفتار، خواب یا غذای امروز لیام بنویس. این یادداشت‌ها بعداً به پیگیری رشد کمک می‌کند.',
+  },
 ]
 
 const saraHomeTasks: HomeTask[] = [
@@ -101,6 +119,24 @@ const saraHomeTasks: HomeTask[] = [
     subject: 'parent',
     description:
       '۱۰ دقیقه گوشی را کنار بگذار. چشم‌ها را ببند، کشش سبک انجام بده یا فقط بنشین و استراحت کن.',
+  },
+  {
+    id: 'sara-4',
+    label: 'نقاشی و رنگ‌آمیزی ۱۵ دقیقه',
+    colorClass: 'bg-home-yellow',
+    completed: false,
+    subject: 'child',
+    description:
+      'با مداد رنگی یا گواش نقاشی آزاد انجام دهید. تمرکز روی فرآیند مهم‌تر از نتیجه نهایی است.',
+  },
+  {
+    id: 'sara-5',
+    label: 'پیاده‌روی کوتاه با هم',
+    colorClass: 'bg-home-teal',
+    completed: false,
+    subject: 'parent',
+    description:
+      '۱۵ دقیقه در محله قدم بزنید. این کار هم برای سارا تحرک است و هم برای تو فرصتی برای آرامش ذهنی.',
   },
 ]
 
@@ -132,6 +168,24 @@ const nimaHomeTasks: HomeTask[] = [
     subject: 'parent',
     description:
       'آب کافی به تمرکز و انرژی روزانه کمک می‌کند. یک لیوان آب کنار خودت بگذار و در طول روز یادآوری کن.',
+  },
+  {
+    id: 'nima-4',
+    label: 'تمرین شمارش و حروف',
+    colorClass: 'bg-home-pink',
+    completed: false,
+    subject: 'child',
+    description:
+      'با کارت‌های حروف یا اعداد بازی کنید. نیما می‌تواند حروف آشنا را نام ببرد یا تا ۲۰ بشمارد.',
+  },
+  {
+    id: 'nima-5',
+    label: 'آماده‌سازی فردا شب',
+    colorClass: 'bg-home-lavender',
+    completed: false,
+    subject: 'parent',
+    description:
+      'لباس فردا، کیف مهد یا وسایل مدرسه را از شب قبل آماده کن تا صبح آرام‌تر شروع شود.',
   },
 ]
 

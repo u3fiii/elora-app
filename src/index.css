@@ -99,6 +99,20 @@
   .animate-task-count-bounce {
     animation: task-count-bounce 0.2s ease-in-out;
   }
+
+  .task-flower-petal-path {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .flower-count-group {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .animate-flower-count-pulse {
+    animation: flower-count-pulse 0.28s ease-in-out;
+  }
 }
 
 @keyframes wizard-input-pulse {
@@ -151,6 +165,17 @@
 
   50% {
     transform: scale(1.02);
+  }
+}
+
+@keyframes flower-count-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.14);
   }
 }
 

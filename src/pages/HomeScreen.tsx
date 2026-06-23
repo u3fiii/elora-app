@@ -1,11 +1,10 @@
 import { useScroll } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useOutletContext } from 'react-router-dom'
 import {
   createInitialChildTasksState,
   homeChildren,
   homeContentCards,
-  homeGreetingDate,
   homeLearningItems,
   homeParentName,
   initialChildTasksById,
@@ -38,21 +37,11 @@ export function HomeScreen() {
   const { scrollY } = useScroll({ container: scrollRef })
   const isGreetingCollapsed = useHomeGreetingCollapse(scrollY, scrollRef)
 
-  const activeChild = useMemo(
-    () =>
-      homeChildren.find((child) => child.id === activeChildId) ?? homeChildren[0],
-    [activeChildId],
-  )
-
   const dailyTasks =
     childTasksById[activeChildId] ??
     childTasksById[homeChildren[0].id] ??
     initialChildTasksById.liam
 
-  const childName =
-    activeChildId === homeChildren[0].id && wizardState?.childName?.trim()
-      ? wizardState.childName.trim()
-      : activeChild.name
   const parentName = wizardState?.userName?.trim() || homeParentName
 
   useEffect(() => {
@@ -67,7 +56,7 @@ export function HomeScreen() {
   }
 
   return (
-    <div className="relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-[#F5F5F5] font-vazir text-home-heading">
+    <div className="relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-white font-vazir text-home-heading">
       <div
         ref={scrollRef}
         className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overflow-x-hidden pb-28"
@@ -89,8 +78,6 @@ export function HomeScreen() {
 
         <HomeTodoSection
           activeChildId={activeChildId}
-          babyName={childName}
-          date={homeGreetingDate}
           tasks={dailyTasks}
           onTasksChange={handleTasksChange}
         />

@@ -64,6 +64,7 @@ export default {
       fontFamily: {
         sans: ['BonyadeKoodak', 'sans-serif'],
         vazir: ['Vazirmatn', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
       },
     },
   },

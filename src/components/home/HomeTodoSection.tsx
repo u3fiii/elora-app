@@ -1,22 +1,23 @@
 import clsx from 'clsx'
-import { ChevronUpDownIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
-import { CalendarDaysIcon } from '@heroicons/react/24/solid'
-import { AnimatePresence, motion, type Variants } from 'framer-motion'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { motion, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import type { HomeTask } from '../../types'
 import { playAllTasksDoneSound } from '../../utils/playAllTasksDoneSound'
 import { playTaskDoneSound } from '../../utils/playTaskDoneSound'
 import { AllTasksDoneDialog } from './AllTasksDoneDialog'
 import { TaskDetailSheet } from './TaskDetailSheet'
+import {
+  TaskFlowerProgress,
+  type TaskFlowerProgressHandle,
+} from './TaskFlowerProgress'
 
-const PROGRESS_RADIUS = 10
-const PROGRESS_STROKE = 3.5
-const PROGRESS_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS
-
-const TASK_CARD_THEMES = [
-  { card: 'bg-[#F7F7F7]' },
-  { card: 'bg-[#F7F7F7]' },
-  { card: 'bg-[#F7F7F7]' },
+const TASK_PETAL_DOT = [
+  'bg-[#EFC26A]',
+  'bg-[#A8B2EE]',
+  'bg-[#FCB0CC]',
+  'bg-[#74C8C8]',
+  'bg-[#7EC9B0]',
 ] as const
 
 const HOME_TASK_STAGGER = 0.05
@@ -40,96 +41,19 @@ const homeTaskItemVariants: Variants = {
 
 interface HomeTodoSectionProps {
   activeChildId: string
-  babyName: string
-  date: string
   tasks: HomeTask[]
   onTasksChange: (tasks: HomeTask[]) => void
 }
 
-function TaskSubjectTag({
-  task,
-  babyName,
-}: {
-  task: HomeTask
-  babyName: string
-}) {
-  return (
-    <span
-      className={clsx(
-        'shrink-0 rounded-full bg-[#E8E8E8] px-2 py-0.5 text-[10px] font-semibold text-[#6E6E6E]',
-        task.completed && 'opacity-60',
-      )}
-    >
-      {task.subject === 'child' ? babyName : 'خودت'}
-    </span>
-  )
-}
-
-function TasksProgressRing({
-  completed,
-  total,
-}: {
-  completed: number
-  total: number
-}) {
-  const progress = total > 0 ? completed / total : 0
-  const strokeDashoffset = PROGRESS_CIRCUMFERENCE * (1 - progress)
-  const remaining = total - completed
-
-  return (
-    <div
-      className="relative size-10 shrink-0"
-      aria-label={`${completed} از ${total} کار انجام شده`}
-    >
-      <svg
-        className="h-full w-full -rotate-90"
-        viewBox="0 0 36 36"
-        aria-hidden
-      >
-        <circle
-          cx="18"
-          cy="18"
-          r={PROGRESS_RADIUS}
-          fill="none"
-          stroke="#E8E4DC"
-          strokeWidth={PROGRESS_STROKE}
-        />
-        <circle
-          cx="18"
-          cy="18"
-          r={PROGRESS_RADIUS}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={PROGRESS_STROKE}
-          strokeLinecap="round"
-          strokeDasharray={PROGRESS_CIRCUMFERENCE}
-          strokeDashoffset={strokeDashoffset}
-          className="text-home-teal transition-[stroke-dashoffset] duration-500 ease-out"
-        />
-      </svg>
-      <span className="absolute inset-0 flex translate-y-px items-center justify-center">
-        <span
-          key={remaining}
-          className="animate-task-count-bounce text-[10px] font-bold leading-none tabular-nums text-home-muted"
-        >
-          {remaining}
-        </span>
-      </span>
-    </div>
-  )
-}
-
 export function HomeTodoSection({
   activeChildId,
-  babyName,
-  date,
   tasks,
   onTasksChange,
 }: HomeTodoSectionProps) {
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const [poppingId, setPoppingId] = useState<string | null>(null)
   const [showAllDoneDialog, setShowAllDoneDialog] = useState(false)
-  const [isTasksExpanded, setIsTasksExpanded] = useState(true)
+  const flowerRef = useRef<TaskFlowerProgressHandle>(null)
 
   const prevAllDoneRef = useRef(
     tasks.length > 0 && tasks.every((task) => task.completed),
@@ -143,7 +67,6 @@ export function HomeTodoSection({
     if (prevChildRef.current === activeChildId) return
 
     setOpenTaskId(null)
-    setIsTasksExpanded(true)
     prevAllDoneRef.current = tasks.length > 0 && tasks.every((task) => task.completed)
     prevChildRef.current = activeChildId
   }, [activeChildId, tasks])
@@ -157,7 +80,6 @@ export function HomeTodoSection({
   }, [allDone])
 
   const openTask = tasks.find((task) => task.id === openTaskId) ?? null
-  const completedCount = tasks.filter((task) => task.completed).length
 
   const toggleTask = (id: string) => {
     const toggledTask = tasks.find((task) => task.id === id)
@@ -178,6 +100,11 @@ export function HomeTodoSection({
       window.setTimeout(() => setPoppingId(null), 280)
     }
 
+    const petalIndex = tasks.findIndex((task) => task.id === id)
+    if (petalIndex >= 0) {
+      flowerRef.current?.updatePetal(petalIndex, nextCompleted)
+    }
+
     onTasksChange(
       tasks.map((task) => {
         if (task.id !== id) return task
@@ -187,42 +114,14 @@ export function HomeTodoSection({
   }
 
   return (
-    <section className="space-y-2 px-4 pt-4">
-      <div className="flex items-center justify-between rounded-[16px] bg-white px-4 py-3">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-home-teal/15 text-home-teal">
-            <CalendarDaysIcon className="h-5 w-5" aria-hidden />
-          </div>
-          <div className="text-right">
-            <h2 className="text-sm font-bold text-home-heading">کارهای امروز</h2>
-            <p className="mt-0.5 text-xs text-home-muted">{date}</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <TasksProgressRing completed={completedCount} total={tasks.length} />
-          <button
-            type="button"
-            onClick={() => setIsTasksExpanded((current) => !current)}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-home-muted transition-colors hover:bg-home-pill hover:text-home-heading"
-            aria-expanded={isTasksExpanded}
-            aria-label={isTasksExpanded ? 'بستن لیست کارها' : 'نمایش لیست کارها'}
-          >
-            <ChevronUpDownIcon className="h-5 w-5" strokeWidth={2} aria-hidden />
-          </button>
-        </div>
-      </div>
-
-      <AnimatePresence initial={false}>
-        {isTasksExpanded ? (
-          <motion.div
-            key={`${activeChildId}-tasks`}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
-          >
-      <div className="rounded-[16px] bg-white p-3">
+    <section className="px-4 pt-4">
+      <div className="rounded-[24px] border border-[#AFE6D2] bg-[linear-gradient(150deg,#EDF7F3_0%,#FAF5E5_100%)] p-4">
+        <TaskFlowerProgress
+          ref={flowerRef}
+          tasks={tasks}
+          activeChildId={activeChildId}
+          embedded
+        />
         <motion.ul
           key={activeChildId}
           className="space-y-2.5"
@@ -231,8 +130,6 @@ export function HomeTodoSection({
           animate="visible"
         >
         {tasks.map((task, index) => {
-          const theme = TASK_CARD_THEMES[index % TASK_CARD_THEMES.length]
-
           return (
           <motion.li
             key={task.id}
@@ -254,8 +151,10 @@ export function HomeTodoSection({
                 : `${task.label} — برای انجام کلیک کنید`
             }
             className={clsx(
-              'relative flex cursor-pointer items-center gap-3 rounded-[12px] px-3 py-2.5 transition-colors duration-300 ease-out',
-              theme.card,
+              'relative flex cursor-pointer items-center gap-3 rounded-[12px] border px-3 py-1 transition-colors duration-300 ease-out',
+              task.completed
+                ? 'border-[#C5E8DC] bg-[#EAF7F2]'
+                : 'border-transparent bg-white',
             )}
           >
             <div className="pointer-events-none flex min-w-0 flex-1 items-center gap-3 text-right">
@@ -263,7 +162,7 @@ export function HomeTodoSection({
                 className={clsx(
                   'relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200',
                   task.completed
-                    ? 'border-transparent bg-home-teal text-white'
+                    ? 'border-transparent bg-[#2E9171] text-white'
                     : 'border-home-border bg-transparent',
                   poppingId === task.id && 'animate-task-check-pop',
                 )}
@@ -287,32 +186,23 @@ export function HomeTodoSection({
                 ) : null}
               </span>
 
-              <span className="flex shrink-0 items-center gap-1 text-xs leading-snug">
-                <span className="relative inline-block max-w-full">
-                  <span
-                    className={clsx(
-                      'font-medium transition-colors duration-300',
-                      task.completed
-                        ? 'text-home-heading/70'
-                        : 'text-home-heading',
-                    )}
-                  >
-                    {task.label}
-                  </span>
-                  {task.completed ? (
-                    <span
-                      aria-hidden
-                      className={clsx(
-                        'pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 origin-right bg-home-heading/70',
-                        poppingId === task.id
-                          ? 'animate-task-strike'
-                          : 'scale-x-100',
-                      )}
-                    />
-                  ) : null}
+              <span className="flex shrink-0 items-center gap-1.5 text-xs leading-snug">
+                <span
+                  className={clsx(
+                    'h-2.5 w-2.5 shrink-0 rounded-full transition-opacity duration-300',
+                    TASK_PETAL_DOT[index % TASK_PETAL_DOT.length],
+                    task.completed ? 'opacity-100' : 'opacity-35',
+                  )}
+                  aria-hidden
+                />
+                <span
+                  className={clsx(
+                    'font-medium transition-colors duration-300',
+                    task.completed ? 'text-[#2E9171]' : 'text-home-heading',
+                  )}
+                >
+                  {task.label}
                 </span>
-
-                <TaskSubjectTag task={task} babyName={babyName} />
               </span>
             </div>
 
@@ -324,7 +214,7 @@ export function HomeTodoSection({
               }}
               className={clsx(
                 'relative z-10 flex h-9 w-9 shrink-0 -translate-x-2 items-center justify-center text-home-border transition-opacity hover:opacity-80',
-                task.completed && 'opacity-45',
+                task.completed && 'opacity-70',
               )}
               aria-label="اطلاعات بیشتر"
             >
@@ -335,9 +225,6 @@ export function HomeTodoSection({
         })}
         </motion.ul>
       </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
 
       <TaskDetailSheet task={openTask} onClose={() => setOpenTaskId(null)} />
       <AllTasksDoneDialog
