@@ -3,8 +3,6 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { motion, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import type { HomeTask } from '../../types'
-import { playAllTasksDoneSound } from '../../utils/playAllTasksDoneSound'
-import { playTaskDoneSound } from '../../utils/playTaskDoneSound'
 import { AllTasksDoneDialog } from './AllTasksDoneDialog'
 import { TaskDetailSheet } from './TaskDetailSheet'
 import {
@@ -86,16 +84,8 @@ export function HomeTodoSection({
     if (!toggledTask) return
 
     const nextCompleted = !toggledTask.completed
-    const willAllBeDone =
-      nextCompleted && tasks.every((task) => task.id === id || task.completed)
 
     if (nextCompleted) {
-      if (willAllBeDone) {
-        playAllTasksDoneSound()
-      } else {
-        playTaskDoneSound()
-      }
-
       setPoppingId(id)
       window.setTimeout(() => setPoppingId(null), 280)
     }

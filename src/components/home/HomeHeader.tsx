@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { Bell, ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import eloraWordmark from '../../assets/brand/elora-wordmark-fa.png'
+import eloraWordmark from '../../assets/brand/elora-logo-full.png'
 import type { HomeChild } from '../../types'
 
 interface HomeHeaderProps {
@@ -119,7 +119,7 @@ export function HomeHeader({
       <img
         src={eloraWordmark}
         alt="الورا"
-        className="h-6 w-auto shrink-0"
+        className="h-9 w-auto shrink-0"
         draggable={false}
       />
     </header>
