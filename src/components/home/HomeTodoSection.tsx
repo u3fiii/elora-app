@@ -105,7 +105,7 @@ export function HomeTodoSection({
 
   return (
     <section className="px-4 pt-4">
-      <div className="rounded-[24px] border border-[#AFE6D2] bg-[linear-gradient(150deg,#EDF7F3_0%,#FAF5E5_100%)] p-4">
+      <div className="rounded-[24px] border border-[#AFE6D2] bg-[linear-gradient(150deg,#C5F2DB_0%,#62B3B4_100%)] p-4">
         <TaskFlowerProgress
           ref={flowerRef}
           tasks={tasks}
@@ -141,10 +141,8 @@ export function HomeTodoSection({
                 : `${task.label} — برای انجام کلیک کنید`
             }
             className={clsx(
-              'relative flex cursor-pointer items-center gap-3 rounded-[12px] border px-3 py-1 transition-colors duration-300 ease-out',
-              task.completed
-                ? 'border-[#C5E8DC] bg-[#EAF7F2]'
-                : 'border-transparent bg-white',
+              'relative flex cursor-pointer items-center gap-3 rounded-[12px] px-3 py-1 transition-colors duration-300 ease-out',
+              task.completed ? 'bg-white/30' : 'bg-white/50',
             )}
           >
             <div className="pointer-events-none flex min-w-0 flex-1 items-center gap-3 text-right">
@@ -152,8 +150,8 @@ export function HomeTodoSection({
                 className={clsx(
                   'relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200',
                   task.completed
-                    ? 'border-transparent bg-[#2E9171] text-white'
-                    : 'border-home-border bg-transparent',
+                    ? 'border-transparent bg-[#49A3AA] text-white'
+                    : 'border-[#49A3AA] bg-transparent',
                   poppingId === task.id && 'animate-task-check-pop',
                 )}
                 aria-hidden
@@ -185,12 +183,7 @@ export function HomeTodoSection({
                   )}
                   aria-hidden
                 />
-                <span
-                  className={clsx(
-                    'font-medium transition-colors duration-300',
-                    task.completed ? 'text-[#2E9171]' : 'text-home-heading',
-                  )}
-                >
+                <span className="font-medium text-[#49A3AA] transition-colors duration-300">
                   {task.label}
                 </span>
               </span>
@@ -202,10 +195,7 @@ export function HomeTodoSection({
                 event.stopPropagation()
                 setOpenTaskId(task.id)
               }}
-              className={clsx(
-                'relative z-10 flex h-9 w-9 shrink-0 -translate-x-2 items-center justify-center text-home-border transition-opacity hover:opacity-80',
-                task.completed && 'opacity-70',
-              )}
+              className="relative z-10 flex h-9 w-9 shrink-0 -translate-x-2 items-center justify-center text-[#49A3AA] transition-opacity hover:opacity-80"
               aria-label="اطلاعات بیشتر"
             >
               <InformationCircleIcon className="h-5 w-5" strokeWidth={1.75} aria-hidden />

@@ -258,10 +258,12 @@ export const TaskFlowerProgress = forwardRef<
       <p
         className={clsx(
           'text-center font-vazir text-[13px] leading-relaxed',
-          embedded ? 'mb-3 mt-3' : 'mt-4',
-          completedCount === petalCount
-            ? 'font-bold text-[#2E9171]'
-            : 'text-[#9C9690]',
+          embedded ? 'mb-3 mt-3 text-white' : 'mt-4',
+          !embedded &&
+            (completedCount === petalCount
+              ? 'font-bold text-[#2E9171]'
+              : 'text-[#9C9690]'),
+          embedded && completedCount === petalCount && 'font-bold',
         )}
       >
         {message}
