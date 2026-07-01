@@ -165,7 +165,7 @@ export const TaskFlowerProgress = forwardRef<
       )}
       aria-label={`${completedCount} از ${petalCount} کار انجام شده`}
     >
-      <div className={clsx('flex justify-center', embedded && '-mb-2')}>
+      <div className={clsx('flex justify-center', embedded && '-mb-3')}>
         <svg
           viewBox="-105 -105 210 198"
           className="block h-48 w-48"
@@ -237,7 +237,7 @@ export const TaskFlowerProgress = forwardRef<
       <p
         className={clsx(
           'text-center font-vazir text-[13px] leading-relaxed',
-          embedded ? 'mb-5 mt-0 text-[#49A3AA]' : 'mt-4',
+          embedded ? 'mb-6 -mt-1 text-[#49A3AA]' : 'mt-4',
           !embedded &&
             (completedCount === petalCount
               ? 'font-bold text-[#2E9171]'
