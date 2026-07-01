@@ -105,7 +105,7 @@ export function HomeTodoSection({
 
   return (
     <section className="px-4 pt-4">
-      <div className="rounded-[24px] border border-[#AFE6D2] bg-[linear-gradient(150deg,#C5F2DB_0%,#62B3B4_100%)] p-4">
+      <div className="rounded-[24px] border border-[#AFE6D2] bg-[linear-gradient(150deg,#E5F5F2_0%,#AFE6D3_100%)] p-4">
         <TaskFlowerProgress
           ref={flowerRef}
           tasks={tasks}

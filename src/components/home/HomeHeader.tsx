@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { Bell, ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import eloraWordmark from '../../assets/brand/elora-logo-full.png'
+import eloraWordmark from '../../assets/brand/elora-logo-header.png'
 import type { HomeChild } from '../../types'
 
 interface HomeHeaderProps {

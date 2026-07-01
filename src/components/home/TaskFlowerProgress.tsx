@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react'
 import type { HomeTask } from '../../types'
+import { formatPersianNumber } from '../../utils/jalali'
 
 const PETAL_PATH =
   'M 0,-96 C 24,-92 40,-58 38,-26 C 36,-2 20,8 0,10 C -20,8 -36,-2 -38,-26 C -40,-58 -24,-92 0,-96 Z'
@@ -18,14 +19,6 @@ const COLORED_GRADIENTS = [
   ['#FCB0CC', '#FED2E2', '#FFF0F5'],
   ['#74C8C8', '#A0DCDC', '#D8F2F2'],
   ['#7EC9B0', '#A6D9C6', '#D8F0E8'],
-] as const
-
-const MUTED_GRADIENTS = [
-  ['#F2E2BC', '#F8EDD6', '#FCF6EA'],
-  ['#CDD4F2', '#DEE3F8', '#EEF0FB'],
-  ['#FAD0DF', '#FCE3EC', '#FEF3F7'],
-  ['#B8DEDE', '#D0EBEB', '#E8F6F6'],
-  ['#B8DDD0', '#D0EBE0', '#E8F6F0'],
 ] as const
 
 const MAX_PETALS = 5
@@ -84,10 +77,6 @@ interface TaskFlowerProgressProps {
   embedded?: boolean
 }
 
-function getPetalFill(index: number, isDone: boolean) {
-  return isDone ? `url(#grad-color-${index})` : `url(#grad-muted-${index})`
-}
-
 export const TaskFlowerProgress = forwardRef<
   TaskFlowerProgressHandle,
   TaskFlowerProgressProps
@@ -108,10 +97,10 @@ export const TaskFlowerProgress = forwardRef<
 
   const completedCount = petalDone.filter(Boolean).length
 
-  const applyPetalFill = useCallback((index: number, isDone: boolean) => {
+  const applyPetalVisibility = useCallback((index: number, isDone: boolean) => {
     const path = petalRefs.current[index]
     if (!path) return
-    path.setAttribute('fill', getPetalFill(index, isDone))
+    path.style.opacity = isDone ? '1' : '0'
   }, [])
 
   const runPetalAnimation = useCallback(
@@ -119,13 +108,15 @@ export const TaskFlowerProgress = forwardRef<
       const path = petalRefs.current[index]
       if (!path) return
 
-      path.animate(BOUNCE_KEYFRAMES, BOUNCE_OPTIONS)
+      if (isDone) {
+        applyPetalVisibility(index, true)
+        path.animate(BOUNCE_KEYFRAMES, BOUNCE_OPTIONS)
+        return
+      }
 
-      window.setTimeout(() => {
-        applyPetalFill(index, isDone)
-      }, 150)
+      applyPetalVisibility(index, false)
     },
-    [applyPetalFill],
+    [applyPetalVisibility],
   )
 
   const updatePetal = useCallback(
@@ -156,11 +147,11 @@ export const TaskFlowerProgress = forwardRef<
     setPetalDone(next)
 
     for (let index = 0; index < petalCount; index += 1) {
-      applyPetalFill(index, next[index] ?? false)
+      applyPetalVisibility(index, next[index] ?? false)
     }
     // Sync without animation only when switching children.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeChildId, applyPetalFill, petalCount])
+  }, [activeChildId, applyPetalVisibility, petalCount])
 
   const message = getCompletionMessage(completedCount, petalCount)
 
@@ -174,10 +165,10 @@ export const TaskFlowerProgress = forwardRef<
       )}
       aria-label={`${completedCount} از ${petalCount} کار انجام شده`}
     >
-      <div className="flex justify-center">
+      <div className={clsx('flex justify-center', embedded && '-mb-2')}>
         <svg
-          viewBox="-105 -105 210 210"
-          className="h-48 w-48"
+          viewBox="-105 -105 210 198"
+          className="block h-48 w-48"
           aria-hidden
         >
           <defs>
@@ -195,19 +186,6 @@ export const TaskFlowerProgress = forwardRef<
               </radialGradient>
             ))}
 
-            {MUTED_GRADIENTS.map((stops, index) => (
-              <radialGradient
-                key={`muted-${index}`}
-                id={`grad-muted-${index}`}
-                cx="50%"
-                cy="60%"
-                r="65%"
-              >
-                <stop offset="0%" stopColor={stops[0]} />
-                <stop offset="60%" stopColor={stops[1]} />
-                <stop offset="100%" stopColor={stops[2]} />
-              </radialGradient>
-            ))}
           </defs>
 
           {Array.from({ length: petalCount }, (_, index) => (
@@ -221,8 +199,9 @@ export const TaskFlowerProgress = forwardRef<
                   petalRefs.current[index] = element
                 }}
                 d={PETAL_PATH}
-                fill={getPetalFill(index, petalDone[index] ?? false)}
+                fill={`url(#grad-color-${index})`}
                 className="task-flower-petal-path"
+                style={{ opacity: petalDone[index] ? 1 : 0 }}
               />
             </g>
           ))}
@@ -246,10 +225,10 @@ export const TaskFlowerProgress = forwardRef<
               dy="1"
               fill="#2E9171"
               fontSize="26"
-              fontFamily="Outfit, sans-serif"
+              fontFamily="Vazirmatn, sans-serif"
               fontWeight="800"
             >
-              {completedCount}
+              {formatPersianNumber(completedCount)}
             </text>
           </g>
         </svg>
@@ -258,7 +237,7 @@ export const TaskFlowerProgress = forwardRef<
       <p
         className={clsx(
           'text-center font-vazir text-[13px] leading-relaxed',
-          embedded ? 'mb-3 mt-3 text-white' : 'mt-4',
+          embedded ? 'mb-5 mt-0 text-[#49A3AA]' : 'mt-4',
           !embedded &&
             (completedCount === petalCount
               ? 'font-bold text-[#2E9171]'
